@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import { OperandContext } from './context/OperandContext';
 import Calculator from './Calculator';
 
@@ -12,8 +12,10 @@ describe('Calculator', () => {
       </OperandContext.Provider>
     );
 
-    const cubedResult = screen.getByText('Cubed').nextSibling.textContent;
-    expect(cubedResult).toBe('8'); // 2 ** 3 = 8
+    const cubedSection = screen.getByRole('heading', {
+      name: /cubed/i,
+    }).parentElement;
+    expect(within(cubedSection).getByText('8')).toBeInTheDocument();
   });
 
   it('calculates multiply by three value correctly', () => {
@@ -24,8 +26,9 @@ describe('Calculator', () => {
       </OperandContext.Provider>
     );
 
-    const multiplyByThreeResult =
-      screen.getByText('Multiply by 3').nextSibling.textContent;
-    expect(multiplyByThreeResult).toBe('9'); // 3 * 3 = 9
+    const multiplySection = screen.getByRole('heading', {
+      name: /multiply by 3/i,
+    }).parentElement;
+    expect(within(multiplySection).getByText('9')).toBeInTheDocument();
   });
 });
